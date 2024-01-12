@@ -3,13 +3,21 @@ import yaml
 import sys
 
 f = open(sys.argv[1], 'r').read()
+juju_model_name = sys.argv[2]
 
 bundle = yaml.safe_load(f)
+
+resource_juju_model = """
+resource "juju_model" "{}" {{
+  name = "{}"
+  credential = juju_credential.openstack-lab.name
+}}
+"""
 
 resource_applications = """
 resource "juju_application" "{}" {{
   name  = "{}"
-  model = juju_model.k8s.name
+  model = juju_model.{}.name
   charm {{
     name     = "{}"
     base     = "ubuntu@22.04"
@@ -33,7 +41,7 @@ resource_applications_config = """
 
 resource_relations = """
 resource "juju_integration" "{}" {{
-  model = juju_model.k8s.name
+  model = juju_model.{}.name
 
   application {{
     name     = juju_application.{}.name
@@ -46,6 +54,8 @@ resource "juju_integration" "{}" {{
   }}
 }}
 """
+
+print(resource_juju_model.format(juju_model_name, juju_model_name))
 
 if 'applications' in bundle:
     applications = bundle['applications']
@@ -76,6 +86,7 @@ if 'applications' in bundle:
         print(resource_applications.format(
             app_name,
             app_name,
+            juju_model_name,
             app_name,
             channel,
             num_units,
@@ -93,6 +104,7 @@ if 'relations' in bundle:
 
         print(resource_relations.format(
             left_app_name + "-" + right_app_name,
+            juju_model_name,
             left_app_name,
             left_app_relation,
             right_app_name,

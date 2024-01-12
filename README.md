@@ -9,8 +9,11 @@ juju export-bundle > bundle.yaml
 Run it simply with: 
 
 ```
-python3 convert.py bundle.yaml > file.tf
+python3 convert.py bundle.yaml juju_model_name > file.tf
 ```
+
+You will need to fix the juju model resource, by adding a credential and
+configuring a juju_credential resource with your provider and auth mechanism.
 
 Test for any wrong-conversions with:
 
