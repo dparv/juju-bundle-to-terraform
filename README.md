@@ -23,3 +23,7 @@ terraform validate
 
 It is possible that multi-line strings in juju config options are malformed
 and need to be manually fixed.
+
+== Known Issues ==
+
+Multi-line strings need to be properly escaped and it's a WIP.
