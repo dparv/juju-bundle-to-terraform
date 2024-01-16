@@ -64,7 +64,7 @@ if 'applications' in bundle:
     for app_name in application_names:
         app = applications[app_name]
         charm = app['charm']
-        channel = app['channel']
+        channel = app['channel'] if 'channel' in app else ''
         num_units = app['num_units'] if 'num_units' in app else 0
         const = app['constraints'] if 'constraints' in app else None
         charm_config = app['options'] if 'options' in app else None
