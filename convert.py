@@ -10,7 +10,6 @@ bundle = yaml.safe_load(f)
 resource_juju_model = """
 resource "juju_model" "{}" {{
   name = "{}"
-  credential = juju_credential.openstack-lab.name
 }}
 """
 
@@ -72,7 +71,7 @@ if 'applications' in bundle:
         if charm_config:
             configs_keys = charm_config.keys()
             for key in configs_keys:
-                conf += '"' + key + '"' + ' : ' +  '"' + str(charm_config[key]) + '",\n    '
+                conf += '"' + key + '"' + ' : ' +  ' <<-EOT\n' + str(charm_config[key]) + '\nEOT,\n    '
             conf = conf.removesuffix(',\n    ')
             config = resource_applications_config.format(conf)
         else:
