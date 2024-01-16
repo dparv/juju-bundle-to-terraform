@@ -26,4 +26,4 @@ and need to be manually fixed.
 
 == Known Issues ==
 
-N/A
+Cross-model relations and offers are not supported yet.
